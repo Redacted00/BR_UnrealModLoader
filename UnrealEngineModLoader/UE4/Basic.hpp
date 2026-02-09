@@ -334,6 +334,7 @@ public:
 	int ComparisonIndex;
 	int Number;
 
+
 	inline FName()
 		: ComparisonIndex(0),
 		  Number(0)

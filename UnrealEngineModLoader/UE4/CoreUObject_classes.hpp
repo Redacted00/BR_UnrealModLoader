@@ -243,6 +243,8 @@ namespace UE4
 			return static_cast<T*>(CreateDefaultObject());
 		}
 
+		
+
 		static UClass* StaticClass()
 		{
 			static auto ptr = UObject::FindClass("Class CoreUObject.Class");
@@ -345,6 +347,83 @@ namespace UE4
 		}
 	};
 
+
+	
+		
+	
+
+	class UActorComponent : public UObject
+		{
+		public:
+			// WARNING TENDS TO CRASH AND I HAVE NO FUCKING CLUE WHY
+			AActor* GetOwner();
+
+			static UClass* StaticClass()
+			{
+				static auto ptr = UObject::FindClass("Class Engine.ActorComponent");
+				return ptr;
+			}
+		};
+
+    class USceneComponent: public UActorComponent
+	{
+	public:
+		// WARNING TENDS TO CRASH AND I HAVE NO FUCKING CLUE WHY
+        
+
+
+		FVector GetComponentLocation();
+		
+
+		static UClass* StaticClass()
+		{
+			static auto ptr = UObject::FindClass("Class Engine.SceneComponent");
+			return ptr;
+		}
+	};
+
+	class UPrimitiveComponent : public USceneComponent
+	{
+		
+
+
+		static UClass* StaticClass()
+		{
+			static auto ptr = UObject::FindClass("Class Engine.PrimitiveComponent");
+			return ptr;
+		}
+	};
+
+	struct FConstrainComponentPropName
+	{
+	      FName ComponentName;
+	};
+
+
+	
+
+
+
+	class UPhysicsConstraintComponent : public USceneComponent
+	{
+	public:
+		// WARNING TENDS TO CRASH AND I HAVE NO FUCKING CLUE WHY
+
+		AActor* ConstraintActor1;
+		FConstrainComponentPropName ComponentName1;
+		AActor* ConstraintActor2;
+		FConstrainComponentPropName ComponentName2;
+		
+		
+		static UClass* StaticClass()
+		{
+			static auto ptr = UObject::FindClass("Class Engine.PhysicsConstraintComponent");
+			return ptr;
+		}
+	};
+
+
+
 	class APlayerController : public AActor
 	{
 	public:
@@ -436,6 +515,8 @@ namespace UE4
 		static class APlayerController* GetPlayerController(int PlayerIndex);
 
 		static void ExecuteConsoleCommand(const class FString& Command, class APlayerController* SpecificPlayer);
+		static void GetAllActorsOfClass(TSubclassOf<AActor> ActorClass, TArray<AActor*>& OutActors);
+		
 
 		static UClass* StaticClass()
 		{

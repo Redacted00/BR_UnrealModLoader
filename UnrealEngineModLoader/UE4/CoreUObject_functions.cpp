@@ -374,6 +374,28 @@ namespace UE4
 		return params.ReturnValue;
 	}
 
+	FVector USceneComponent::GetComponentLocation()
+	{
+		static auto fn = UObject::FindObject<UFunction>("Function Engine.SceneComponent.K2_GetComponentLocation");
+		struct
+		{
+			FVector ReturnValue;
+		}params;
+		UObject::ProcessEvent(fn, &params);
+		return params.ReturnValue;
+	}
+
+	AActor* UActorComponent::GetOwner()
+	{
+		static auto fn = UObject::FindObject<UFunction>("Function Engine.ActorComponent.GetOwner");
+		struct
+		{
+			AActor* ReturnValue;
+		}params;
+		UObject::ProcessEvent(fn, &params);
+		return params.ReturnValue;
+	}
+
 	//---------------------------------------------------------------------------
 	//GameplayStatics Functions
 	//---------------------------------------------------------------------------
@@ -491,6 +513,7 @@ namespace UE4
 		GameplayStatics->ProcessEvent(fn, &params);
 		return params.ReturnValue;
 	}
+	
 
 
 	void UGameplayStatics::ExecuteConsoleCommand(const class FString& Command, class APlayerController* SpecificPlayer)
@@ -509,6 +532,27 @@ namespace UE4
 		GameplayStatics->ProcessEvent(fn, &params);
 	}
 
+	
+
+	void UGameplayStatics::GetAllActorsOfClass(TSubclassOf<AActor> ActorClass, TArray<AActor*>& OutActors)
+	{
+		static auto fn = UObject::FindObject<UFunction>("Function Engine.GameplayStatics.GetAllActorsOfClass");
+		auto GameplayStatics = (UE4::UGameplayStatics*)UE4::UGameplayStatics::StaticClass()->CreateDefaultObject();
+		struct
+		{
+			class UObject* WorldContextObject;
+			UClass* ActorClass;
+			TArray<AActor*> OutActors;
+		}params;
+		params.WorldContextObject = UWorld::GetWorld();
+		params.ActorClass = ActorClass.GetClass();
+		params.OutActors = OutActors;
+		GameplayStatics->ProcessEvent(fn, &params);
+		OutActors = params.OutActors;
+	}
+
+
+	
 
 }
 
